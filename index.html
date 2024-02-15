@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ファイル一括リネーム</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ファイル一括リネーム</h1>
+    <label>拡張子の前に入れる言葉：<input value="_社外秘" id="suffix" /></label>
+    <input type="file" id="file" multiple />
+  </main>
+
+  <script>
+    document.getElementById('file').addEventListener('change', function (e) {
+      const suffix = document.getElementById('suffix').value;
+
+      for (const file of e.target.files) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target.result;
+          const a = document.createElement('a');
+          a.href = dataUrl;
+          a.download = file.name.replace(/(\.[^.]+)$/, suffix + '$1');
+          a.click();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
